@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.0.0
-Release:          3%{dist}
+Release:          4%{dist}
 Summary:          Bean Validation API
 Group:            Development/Libraries
 License:          ASL 2.0
@@ -45,24 +45,24 @@ This package contains the API documentation for %{name}.
 mvn-rpmbuild install javadoc:aggregate
 
 %install
-install -d -m 755 $RPM_BUILD_ROOT%{_javadir}/jboss
+install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
 install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
+install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 # JAR
-install -pm 644 target/validation-api-%{namedversion}.jar $RPM_BUILD_ROOT%{_javadir}/jboss/%{name}.jar
+install -pm 644 target/validation-api-%{namedversion}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 # POM
-install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP.jboss-%{name}.pom
+install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 
 # DEPMAP
-%add_maven_depmap JPP.jboss-%{name}.pom jboss/%{name}.jar
+%add_maven_depmap JPP-%{name}.pom %{name}.jar
 
 # APIDOCS
-install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-cp -rp target/site/apidocs/ $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+cp -rp target/site/apidocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 %files
-%{_javadir}/jboss/%{name}.jar
+%{_javadir}/*
 %{_mavenpomdir}/*
 %{_mavendepmapfragdir}/*
 %doc license.txt
@@ -72,6 +72,9 @@ cp -rp target/site/apidocs/ $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 %doc license.txt
 
 %changelog
+* Fri Mar 09 2012 Marek Goldmann <mgoldman@redhat.com> 1.0.0-4
+- Relocated jars to _javadir
+
 * Thu Jan 12 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
