@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.0.0
-Release:          4%{dist}
+Release:          5%{dist}
 Summary:          Bean Validation API
 Group:            Development/Libraries
 License:          ASL 2.0
@@ -72,6 +72,9 @@ cp -rp target/site/apidocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 %doc license.txt
 
 %changelog
+* Wed Jul 18 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Fri Mar 09 2012 Marek Goldmann <mgoldman@redhat.com> 1.0.0-4
 - Relocated jars to _javadir
 
