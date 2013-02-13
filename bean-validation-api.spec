@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.0.0
-Release:          6%{dist}
+Release:          7%{dist}
 Summary:          Bean Validation API
 Group:            Development/Libraries
 License:          ASL 2.0
@@ -72,6 +72,9 @@ cp -rp target/site/apidocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 %doc license.txt
 
 %changelog
+* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Wed Feb 06 2013 Java SIG <java-devel@lists.fedoraproject.org> - 1.0.0-6
 - Update for https://fedoraproject.org/wiki/Fedora_19_Maven_Rebuild
 - Replace maven BuildRequires with maven-local
