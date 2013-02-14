@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.0.0
-Release:          7%{dist}
+Release:          8%{dist}
 Summary:          Bean Validation API
 Group:            Development/Libraries
 License:          ASL 2.0
@@ -22,6 +22,10 @@ BuildRequires:    maven-jar-plugin
 BuildRequires:    maven-javadoc-plugin
 BuildRequires:    maven-surefire-plugin
 BuildRequires:    maven-surefire-provider-junit
+BuildRequires:    maven-docck-plugin
+BuildRequires:    maven-invoker-plugin
+BuildRequires:    maven-clean-plugin
+BuildRequires:    maven-dependency-plugin
 
 Requires:         jpackage-utils
 Requires:         java
@@ -40,6 +44,8 @@ This package contains the API documentation for %{name}.
 
 %prep
 %setup -q -n %{name}-%{namedversion}
+
+%pom_xpath_remove "pom:build/pom:extensions"
 
 %build
 mvn-rpmbuild install javadoc:aggregate
@@ -72,6 +78,9 @@ cp -rp target/site/apidocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 %doc license.txt
 
 %changelog
+* Thu Feb 14 2013 Marek Goldmann <mgoldman@redhat.com> - 1.0.0-8
+- Fixed build issue
+
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
