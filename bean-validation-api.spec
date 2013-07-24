@@ -1,83 +1,62 @@
-%global namedreltag .GA
+%global namedreltag .Final
 %global namedversion %{version}%{?namedreltag}
 
 Name:             bean-validation-api
-Version:          1.0.0
-Release:          8%{dist}
-Summary:          Bean Validation API
-Group:            Development/Libraries
+Version:          1.1.0
+Release:          1%{dist}
+Summary:          Bean Validation API (JSR 349)
 License:          ASL 2.0
-URL:              http://www.hibernate.org/subprojects/validator.html
-
-# svn export http://anonsvn.jboss.org/repos/hibernate/beanvalidation/api/tags/v1_0_0_GA/ bean-validation-api-1.0.0.GA
-# tar czf bean-validation-api-1.0.0.GA-src-svn.tar.gz bean-validation-api-1.0.0.GA
-Source0:          %{name}-%{namedversion}-src-svn.tar.gz
+URL:              http://beanvalidation.org/
+Source0:          https://github.com/beanvalidation/beanvalidation-api/archive/%{namedversion}.tar.gz
 
 BuildRequires:    java-devel
-BuildRequires:    jpackage-utils
-BuildRequires:    maven-local
-BuildRequires:    maven-compiler-plugin
-BuildRequires:    maven-install-plugin
-BuildRequires:    maven-jar-plugin
-BuildRequires:    maven-javadoc-plugin
-BuildRequires:    maven-surefire-plugin
-BuildRequires:    maven-surefire-provider-junit
-BuildRequires:    maven-docck-plugin
-BuildRequires:    maven-invoker-plugin
-BuildRequires:    maven-clean-plugin
-BuildRequires:    maven-dependency-plugin
 
-Requires:         jpackage-utils
-Requires:         java
+# test deps
+BuildRequires:    mvn(org.testng:testng)
+
+BuildRequires:    maven-local
+BuildRequires:    maven-plugin-bundle
+BuildRequires:    maven-surefire-provider-testng
+
 BuildArch:        noarch
 
 %description
-This package contains Bean Validation (JSR-303) API
+This package contains Bean Validation (JSR-349) API.
 
 %package javadoc
-Summary:          Javadocs for %{name}
-Group:            Development/Libraries
-Requires:         jpackage-utils
+Summary:          Javadoc for %{name}
 
 %description javadoc
 This package contains the API documentation for %{name}.
 
 %prep
-%setup -q -n %{name}-%{namedversion}
+%setup -q -n beanvalidation-api-%{namedversion}
 
-%pom_xpath_remove "pom:build/pom:extensions"
+# Disable javadoc jar
+%pom_xpath_remove "pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-javadoc-plugin']/pom:executions"
+# Disable source jar
+%pom_remove_plugin :maven-source-plugin
 
 %build
-mvn-rpmbuild install javadoc:aggregate
+
+%mvn_file : %{name}
+%mvn_build
 
 %install
-install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
-install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
-install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+%mvn_install
 
-# JAR
-install -pm 644 target/validation-api-%{namedversion}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
-
-# POM
-install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
-
-# DEPMAP
-%add_maven_depmap JPP-%{name}.pom %{name}.jar
-
-# APIDOCS
-cp -rp target/site/apidocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-
-%files
-%{_javadir}/*
-%{_mavenpomdir}/*
-%{_mavendepmapfragdir}/*
+%files -f .mfiles
 %doc license.txt
 
-%files javadoc
-%{_javadocdir}/%{name}
+%files javadoc -f .mfiles-javadoc
 %doc license.txt
 
 %changelog
+* Wed Jul 24 2013 gil cattaneo <puntogil@libero.it> 1.1.0-1
+- update to 1.1.0.Final
+- adapt to current guideline
+- resolve rpmlint warning
+
 * Thu Feb 14 2013 Marek Goldmann <mgoldman@redhat.com> - 1.0.0-8
 - Fixed build issue
 
