@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.1.0
-Release:          1%{dist}
+Release:          2%{dist}
 Summary:          Bean Validation API (JSR 349)
 License:          ASL 2.0
 URL:              http://beanvalidation.org/
@@ -52,6 +52,9 @@ This package contains the API documentation for %{name}.
 %doc license.txt
 
 %changelog
+* Fri Mar 28 2014 Michael Simacek <msimacek@redhat.com> - 1.1.0-2
+- Use Requires: java-headless rebuild (#1067528)
+
 * Wed Jul 24 2013 gil cattaneo <puntogil@libero.it> 1.1.0-1
 - update to 1.1.0.Final
 - adapt to current guideline
