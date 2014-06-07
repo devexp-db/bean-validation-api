@@ -3,7 +3,7 @@
 
 Name:             bean-validation-api
 Version:          1.1.0
-Release:          2%{dist}
+Release:          3%{dist}
 Summary:          Bean Validation API (JSR 349)
 License:          ASL 2.0
 URL:              http://beanvalidation.org/
@@ -52,6 +52,9 @@ This package contains the API documentation for %{name}.
 %doc license.txt
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Fri Mar 28 2014 Michael Simacek <msimacek@redhat.com> - 1.1.0-2
 - Use Requires: java-headless rebuild (#1067528)
 
