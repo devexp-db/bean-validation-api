@@ -1,30 +1,31 @@
+%{?scl:%scl_package bean-validation-api}
+%{!?scl:%global pkg_name %{name}}
+
 %global namedreltag .Final
 %global namedversion %{version}%{?namedreltag}
 
-Name:             bean-validation-api
-Version:          1.1.0
-Release:          5%{dist}
-Summary:          Bean Validation API (JSR 349)
-License:          ASL 2.0
-URL:              http://beanvalidation.org/
-Source0:          https://github.com/beanvalidation/beanvalidation-api/archive/%{namedversion}.tar.gz
+Name:		%{?scl_prefix}bean-validation-api
+Version:	1.1.0
+Release:	6%{dist}
+Summary:	Bean Validation API (JSR 349)
+License:	ASL 2.0
+URL:		http://beanvalidation.org/
+Source0:	https://github.com/beanvalidation/beanvalidation-api/archive/%{namedversion}.tar.gz
 
-BuildRequires:    java-devel
+BuildRequires:  %{?scl_prefix_maven}maven-local
+BuildRequires:  %{?scl_prefix_maven}maven-plugin-bundle
+BuildRequires:  %{?scl_prefix_maven}maven-surefire-provider-testng
+# test dependencies
+BuildRequires:  %{?scl_prefix_maven}testng
+%{?scl:Requires: %scl_runtime}
 
-# test deps
-BuildRequires:    mvn(org.testng:testng)
-
-BuildRequires:    maven-local
-BuildRequires:    maven-plugin-bundle
-BuildRequires:    maven-surefire-provider-testng
-
-BuildArch:        noarch
+BuildArch:      noarch
 
 %description
 This package contains Bean Validation (JSR-349) API.
 
 %package javadoc
-Summary:          Javadoc for %{name}
+Summary:        Javadoc for %{name}
 
 %description javadoc
 This package contains the API documentation for %{name}.
@@ -32,18 +33,23 @@ This package contains the API documentation for %{name}.
 %prep
 %setup -q -n beanvalidation-api-%{namedversion}
 
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 # Disable javadoc jar
 %pom_xpath_remove "pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-javadoc-plugin']/pom:executions"
 # Disable source jar
 %pom_remove_plugin :maven-source-plugin
+%{?scl:EOF}
 
 %build
-
-%mvn_file : %{name}
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
+%mvn_file : %{pkg_name}
 %mvn_build
+%{?scl:EOF}
 
 %install
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_install
+%{?scl:EOF}
 
 %files -f .mfiles
 %doc license.txt
@@ -52,6 +58,9 @@ This package contains the API documentation for %{name}.
 %doc license.txt
 
 %changelog
+* Wed Nov 02 2016 Tomas Repik <trepik@redhat.com> - 1.1.0-6
+- scl conversion
+
 * Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
