@@ -15,6 +15,7 @@ Source0:	https://github.com/beanvalidation/beanvalidation-api/archive/%{namedver
 BuildRequires:  %{?scl_prefix_maven}maven-local
 BuildRequires:  %{?scl_prefix_maven}maven-plugin-bundle
 BuildRequires:  %{?scl_prefix_maven}maven-surefire-provider-testng
+BuildRequires:  %{?scl_prefix}snakeyaml
 # test dependencies
 BuildRequires:  %{?scl_prefix_maven}testng
 %{?scl:Requires: %scl_runtime}
